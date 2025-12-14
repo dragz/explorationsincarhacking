@@ -7,10 +7,10 @@ The most important scripts are `query_signalset.py` and `query_signal.py`. The o
 All scripts are created with heavy use of Claude Sonnet 4.
 
 ## Prerequisites
+A working canbus setup on a Linux pc, for instance as described in https://github.com/dragz/explorationsincarhacking/
 
 ### OBDb repos
 
-A working canbus setup on a Linux pc, for instance as described in https://github.com/dragz/explorationsincarhacking/
 
 Clone '.schemas' and your vehicle repositories in https://github.com/OBDb/.
 
