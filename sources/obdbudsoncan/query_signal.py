@@ -18,8 +18,46 @@ import sys
 from pathlib import Path
 from typing import Optional, Tuple
 
+
+def load_config() -> dict:
+    """Load configuration from config.txt."""
+    config = {
+        'obdb_dir': '',
+        'default_signalset': '',
+        'default_interface': 'can0'
+    }
+    
+    config_path = Path(__file__).parent / 'config.txt'
+    if not config_path.exists():
+        return config
+    
+    try:
+        with open(config_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    key, value = line.split('=', 1)
+                    key = key.strip()
+                    value = value.strip()
+                    if key in config and value:
+                        config[key] = value
+    except Exception as e:
+        print(f"Warning: Could not read config.txt: {e}")
+    
+    return config
+
+
+# Load config first to get obdb_dir
+config = load_config()
+
 # Add .schemas/python directory to path
-SCHEMAS_DIR = Path(__file__).parent.parent / '.schemas' / 'python'
+if config['obdb_dir']:
+    SCHEMAS_DIR = Path(config['obdb_dir']) / '.schemas' / 'python'
+else:
+    # Auto-detect: go up from script location
+    SCHEMAS_DIR = Path(__file__).parent.parent / '.schemas' / 'python'
 sys.path.insert(0, str(SCHEMAS_DIR))
 
 # Import OBDb modules first, before python-can, to avoid module name conflict
@@ -74,36 +112,6 @@ class RawPayload(udsoncan.DidCodec):
    def __len__(self):
       raise udsoncan.DidCodec.ReadAllRemainingData
       return 0    # encoded payload is  byte long.
-
-
-def load_config() -> dict:
-    """Load configuration from config.txt."""
-    config = {
-        'obdb_dir': '',
-        'default_signalset': '',
-        'default_interface': 'can0'
-    }
-    
-    config_path = Path(__file__).parent / 'config.txt'
-    if not config_path.exists():
-        return config
-    
-    try:
-        with open(config_path, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                if '=' in line:
-                    key, value = line.split('=', 1)
-                    key = key.strip()
-                    value = value.strip()
-                    if key in config and value:
-                        config[key] = value
-    except Exception as e:
-        print(f"Warning: Could not read config.txt: {e}")
-    
-    return config
 
 
 def resolve_signalset_path(signalset_arg: Optional[str], config: dict) -> str:
@@ -322,6 +330,7 @@ def format_signal_value(signal: Signal, value) -> str:
 
 
 def main():
+    global config
     # Load configuration
     config = load_config()
     
@@ -351,9 +360,8 @@ Examples:
       --request-id 0x7E2
   
   # Auto-detect response ID (request-id + 8)
-  python3 query_signal.py --signal IONIQ5_HVBAT_HV_BATTERY_VOLTAGE \\
-      --signalset ../Hyundai-IONIQ-5/signalsets/v3/default.json \\
-      --request-id 0x744
+  py# config already loaded at module level
+    global config
 
 Note: The script automatically determines which command contains the signal
       and queries the appropriate service/PID combination.

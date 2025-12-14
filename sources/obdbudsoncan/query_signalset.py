@@ -18,20 +18,6 @@ import sys
 from pathlib import Path
 from typing import Optional, List
 
-# Add .schemas/python directory to path
-SCHEMAS_DIR = Path(__file__).parent.parent / '.schemas' / 'python'
-sys.path.insert(0, str(SCHEMAS_DIR))
-
-try:
-    # Import OBDb modules (note: different from python-can library)
-    from can.signals import SignalSet, Command, Signal, Scaling, Enumeration
-    from can.command_registry import CommandRegistry, ServiceType, CommandResponse
-    from can.can_frame import CANPacket, CANIDFormat
-except ImportError as e:
-    print(f"Error: Could not import OBDb modules: {e}")
-    print(f"Make sure the .schemas/python directory exists at: {SCHEMAS_DIR}")
-    sys.exit(1)
-
 
 def load_config() -> dict:
     """Load configuration from config.txt."""
@@ -61,6 +47,28 @@ def load_config() -> dict:
         print(f"Warning: Could not read config.txt: {e}")
     
     return config
+
+
+# Load config first to get obdb_dir
+config = load_config()
+
+# Add .schemas/python directory to path
+if config['obdb_dir']:
+    SCHEMAS_DIR = Path(config['obdb_dir']) / '.schemas' / 'python'
+else:
+    # Auto-detect: go up from script location
+    SCHEMAS_DIR = Path(__file__).parent.parent / '.schemas' / 'python'
+sys.path.insert(0, str(SCHEMAS_DIR))
+
+try:
+    # Import OBDb modules (note: different from python-can library)
+    from can.signals import SignalSet, Command, Signal, Scaling, Enumeration
+    from can.command_registry import CommandRegistry, ServiceType, CommandResponse
+    from can.can_frame import CANPacket, CANIDFormat
+except ImportError as e:
+    print(f"Error: Could not import OBDb modules: {e}")
+    print(f"Make sure the .schemas/python directory exists at: {SCHEMAS_DIR}")
+    sys.exit(1)
 
 
 def resolve_signalset_path(signalset_arg: Optional[str], config: dict) -> str:
@@ -272,8 +280,8 @@ def list_all_signals(signalset: SignalSet):
 
 
 def main():
-    # Load configuration
-    config = load_config()
+    # config already loaded at module level
+    global config
     
     parser = argparse.ArgumentParser(
         description='Query and parse OBDb signalset data',
