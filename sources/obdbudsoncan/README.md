@@ -4,7 +4,7 @@ This directory contains Python scripts demonstrating how to work with OBDb signa
 
 The most important scripts are `query_signalset.py` and `query_signal.py`. The others are mostly for testing the communication.
 
-All scripts are created with heavy use of Claude Sonnet 4.
+All scripts are created with heavy use of Claude Sonnet 4 and are therefore a bit overengineered...
 
 ## Prerequisites
 A working canbus setup on a Linux pc, for instance as described in https://github.com/dragz/explorationsincarhacking/
