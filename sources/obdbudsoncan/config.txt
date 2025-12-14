@@ -1,0 +1,13 @@
+# OBDb Python Examples Configuration
+# Edit these values to set defaults for the query scripts
+
+# Path to OBDb root directory (parent of .schemas and vehicle folders)
+# Leave empty to auto-detect from script location
+obdb_dir = /path/to/OBDb
+
+# Default vehicle/signalset path (relative to obdb_dir or absolute)
+# Example: Hyundai-IONIQ-5/signalsets/v3/default.json
+default_signalset = Hyundai-IONIQ-5/signalsets/v3/default.json
+
+# Default CAN interface
+default_interface = can0
