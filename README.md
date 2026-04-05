@@ -11,6 +11,6 @@ _I hope this is useful for others. At this time I'm only a newbie at car hacking
 
 [Connect Raspberry Pi to an OBDII module with bluetooth](./articles/rpiandelm327onbt.md)
 
-[Combine OBDb and Udsoncan to query and intrepret data](./articles/obdb_and_udsoncan.md)
+[Combine OBDb and Udsoncan to query and interpret data](./articles/obdb_and_udsoncan.md)
 
 [Getting past the secure gateway](./articles/getting_past_the_secure_gateway/getting_past_the_secure_gateway.md)
