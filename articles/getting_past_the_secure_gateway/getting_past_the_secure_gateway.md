@@ -22,6 +22,8 @@ By looking through the wiring harness layouts and schematics in the repair shop 
 
 ## Getting a harness
 
+**UPDATE:** Premade harness is now availble from https://www.electroniqbuttons.com 
+
 It turns out that the connector above is a nearly standard 32-pin connector used in other cars and extension harnesses can be found on aliexpress: https://www.aliexpress.com/item/1005007839039821.html
 
 Many thanks to the friendly folks at r/CarHacking for guiding me in the right direction here, https://www.reddit.com/r/CarHacking/comments/1kdcalf/connector_type/
